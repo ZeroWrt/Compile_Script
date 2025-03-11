@@ -57,6 +57,9 @@ select_device() {
 # 调用协议函数
 agreement
 
+# 调用设备选择函数
+select_device
+
 # 更新feeds
 ./scripts/feeds update -a
 ./scripts/feeds install -a
