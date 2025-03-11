@@ -41,11 +41,11 @@ select_device() {
     case "$device_choice" in
         1)
             color_output "\e[32m选择了 x86，正在下载配置...\e[0m"
-            curl -skL https://raw.githubusercontent.com/ZeroWrt/ZeroWrt-Action/refs/heads/master/configs/x86_64.config -o .config
+            curl -skL https://raw.githubusercontent.com/oppen321/ZeroWrt-Action/refs/heads/master/configs/x86_64.config -o .config
             ;;
         2)
             color_output "\e[32m选择了 rockchip，正在下载配置...\e[0m"
-            curl -skL https://raw.githubusercontent.com/ZeroWrt/ZeroWrt-Action/refs/heads/master/configs/rockchip.config -o .config
+            curl -skL https://raw.githubusercontent.com/oppen321/ZeroWrt-Action/refs/heads/master/configs/rockchip.config -o .config
             ;;
         *)
             color_output "\e[31m输入无效，请输入 1 或 2。\e[0m"
