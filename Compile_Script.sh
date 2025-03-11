@@ -28,8 +28,38 @@ agreement() {
     color_output "\e[32m已同意条款，开始执行脚本...\e[0m"
 }
 
+# 设备选择
+select_device() {
+    clear
+    color_output "\e[36m请选择要编译的设备:\e[0m"
+    color_output "\e[36m======================================\e[0m"
+    color_output "\e[33m  1. x86\e[0m"
+    color_output "\e[33m  2. rockchip\e[0m"
+    color_output "\e[36m======================================\e[0m"
+
+    read -p "请输入编号 (1 或 2): " device_choice
+    case "$device_choice" in
+        1)
+            color_output "\e[32m选择了 x86，正在下载配置...\e[0m"
+            curl -skL https://git.kejizero.online/zhao/files/raw/branch/main/Config/mtk7986.config -o .config
+            ;;
+        2)
+            color_output "\e[32m选择了 rockchip，正在下载配置...\e[0m"
+            curl -skL https://git.kejizero.online/zhao/files/raw/branch/main/Config/rockchip.config -o .config
+            ;;
+        *)
+            color_output "\e[31m输入无效，请输入 1 或 2。\e[0m"
+            exit 1
+            ;;
+    esac
+}
+
 # 调用协议函数
 agreement
+
+# 更新feeds
+./scripts/feeds update -a
+./scripts/feeds install -a
 
 # 修改默认IP
 sed -i 's/192.168.1.1/10.0.0.1/g' package/base-files/files/bin/config_generate
@@ -128,4 +158,16 @@ sed -i 's/OpenWrt/ZeroWrt/' package/base-files/files/bin/config_generate
 
 # default-settings
 git clone --depth=1 -b openwrt-24.10 https://github.com/oppen321/default-settings package/default-settings
+
+# 生成默认配置
+echo -e "${GREEN}生成默认配置...${NC}"
+make defconfig
+
+# 编译 ZeroWrt
+echo -e "${BLUE}开始编译 ZeroWrt...${NC}"
+echo -e "${YELLOW}使用所有可用的 CPU 核心进行并行编译...${NC}"
+make -j$(nproc) || make -j1 || make -j1 V=s
+  
+# 输出编译完成的固件路径
+echo -e "${GREEN}编译完成！固件已生成至：${NC} bin/targets"
 
