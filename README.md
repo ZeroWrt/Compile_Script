@@ -1,3 +1,3 @@
 # ZeroWrt
 
-curl -sS -O https://git.kejizero.online/zhao/files/raw/branch/main/x86.sh && chmod +x x86.sh && ./x86.sh
+curl -sS -O https://raw.githubusercontent.com/ZeroWrt/Compile_Script/refs/heads/main/Compile_Script.sh && chmod +x Compile_Script.sh && ./Compile_Script.sh
